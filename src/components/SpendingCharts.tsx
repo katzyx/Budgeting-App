@@ -3,6 +3,7 @@ import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, CartesianGrid, Toolti
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { supabase } from "@/integrations/supabase/client";
 import { format, parseISO } from "date-fns";
+import { TrendingUp, TrendingDown, DollarSign } from "lucide-react";
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8', '#82CA9D', '#FFC658', '#FF7C7C'];
 
@@ -100,99 +101,120 @@ export const SpendingCharts = () => {
   const stats = getTotalStats();
 
   return (
-    <div className="space-y-6">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg">Total Income</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-2xl font-bold text-green-600">${stats.totalIncome.toFixed(2)}</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg">Total Expenses</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-2xl font-bold text-red-600">${stats.totalExpenses.toFixed(2)}</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg">Net Amount</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className={`text-2xl font-bold ${stats.netAmount >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-              ${stats.netAmount.toFixed(2)}
-            </p>
-          </CardContent>
-        </Card>
+    <div className="space-y-8">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="wealthsimple-card p-6">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-8 h-8 wealthsimple-pink rounded-lg flex items-center justify-center border border-pink-200">
+              <TrendingUp className="w-4 h-4 text-gray-700" />
+            </div>
+            <div>
+              <h3 className="text-sm font-medium text-gray-600">Total Income</h3>
+            </div>
+          </div>
+          <p className="text-3xl font-bold text-gray-900">${stats.totalIncome.toFixed(2)}</p>
+        </div>
+        <div className="wealthsimple-card p-6">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-8 h-8 wealthsimple-pink rounded-lg flex items-center justify-center border border-pink-200">
+              <TrendingDown className="w-4 h-4 text-gray-700" />
+            </div>
+            <div>
+              <h3 className="text-sm font-medium text-gray-600">Total Expenses</h3>
+            </div>
+          </div>
+          <p className="text-3xl font-bold text-gray-900">${stats.totalExpenses.toFixed(2)}</p>
+        </div>
+        <div className="wealthsimple-card p-6">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-8 h-8 wealthsimple-pink rounded-lg flex items-center justify-center border border-pink-200">
+              <DollarSign className="w-4 h-4 text-gray-700" />
+            </div>
+            <div>
+              <h3 className="text-sm font-medium text-gray-600">Net Amount</h3>
+            </div>
+          </div>
+          <p className="text-3xl font-bold text-gray-900">
+            ${stats.netAmount.toFixed(2)}
+          </p>
+        </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card>
-          <CardHeader>
-            <CardTitle>Spending by Category</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <ResponsiveContainer width="100%" height={300}>
-              <PieChart>
-                <Pie
-                  data={categoryData}
-                  cx="50%"
-                  cy="50%"
-                  labelLine={false}
-                  label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
-                  outerRadius={80}
-                  fill="#8884d8"
-                  dataKey="value"
-                >
-                  {categoryData.map((_, index) => (
-                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                  ))}
-                </Pie>
-                <Tooltip formatter={(value) => [`$${value}`, 'Amount']} />
-              </PieChart>
-            </ResponsiveContainer>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Monthly Income vs Expenses</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={monthlyData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="month" />
-                <YAxis />
-                <Tooltip formatter={(value) => `$${value}`} />
-                <Bar dataKey="income" fill="#00C49F" />
-                <Bar dataKey="expenses" fill="#FF8042" />
-              </BarChart>
-            </ResponsiveContainer>
-          </CardContent>
-        </Card>
-      </div>
-
-      <Card>
-        <CardHeader>
-          <CardTitle>Net Worth Trend</CardTitle>
-        </CardHeader>
-        <CardContent>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="wealthsimple-card p-6">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-8 h-8 wealthsimple-pink rounded-lg flex items-center justify-center border border-pink-200">
+              <span className="text-gray-700 text-lg">📊</span>
+            </div>
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900">Spending by Category</h3>
+              <p className="text-sm text-gray-600">Where your money goes</p>
+            </div>
+          </div>
           <ResponsiveContainer width="100%" height={300}>
-            <LineChart data={monthlyData}>
+            <PieChart>
+              <Pie
+                data={categoryData}
+                cx="50%"
+                cy="50%"
+                labelLine={false}
+                label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                outerRadius={80}
+                fill="#8884d8"
+                dataKey="value"
+              >
+                {categoryData.map((_, index) => (
+                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                ))}
+              </Pie>
+              <Tooltip formatter={(value) => [`$${value}`, 'Amount']} />
+            </PieChart>
+          </ResponsiveContainer>
+        </div>
+
+        <div className="wealthsimple-card p-6">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-8 h-8 wealthsimple-pink rounded-lg flex items-center justify-center border border-pink-200">
+              <span className="text-gray-700 text-lg">📈</span>
+            </div>
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900">Monthly Income vs Expenses</h3>
+              <p className="text-sm text-gray-600">Your monthly cash flow</p>
+            </div>
+          </div>
+          <ResponsiveContainer width="100%" height={300}>
+            <BarChart data={monthlyData}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="month" />
               <YAxis />
               <Tooltip formatter={(value) => `$${value}`} />
-              <Line type="monotone" dataKey="net" stroke="#8884d8" strokeWidth={2} />
-            </LineChart>
+              <Bar dataKey="income" fill="#00C49F" />
+              <Bar dataKey="expenses" fill="#FF8042" />
+            </BarChart>
           </ResponsiveContainer>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
+
+      <div className="wealthsimple-card p-6">
+        <div className="flex items-center gap-3 mb-6">
+          <div className="w-8 h-8 wealthsimple-pink rounded-lg flex items-center justify-center border border-pink-200">
+            <span className="text-gray-700 text-lg">💰</span>
+          </div>
+          <div>
+            <h3 className="text-lg font-semibold text-gray-900">Net Worth Trend</h3>
+            <p className="text-sm text-gray-600">Your financial growth over time</p>
+          </div>
+        </div>
+        <ResponsiveContainer width="100%" height={300}>
+          <LineChart data={monthlyData}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="month" />
+            <YAxis />
+            <Tooltip formatter={(value) => `$${value}`} />
+            <Line type="monotone" dataKey="net" stroke="#8884d8" strokeWidth={2} />
+          </LineChart>
+        </ResponsiveContainer>
+      </div>
     </div>
   );
 };

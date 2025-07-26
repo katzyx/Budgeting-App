@@ -7,6 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { DollarSign } from "lucide-react";
 
 const CATEGORIES = [
   "Food & Dining", "Shopping", "Transportation", "Bills & Utilities", 
@@ -63,12 +64,17 @@ export const TransactionForm = ({ onTransactionAdded }: { onTransactionAdded?: (
   };
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Add Transaction</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="wealthsimple-card p-6">
+        <div className="flex items-center gap-3 mb-6">
+          <div className="w-10 h-10 wealthsimple-pink rounded-xl flex items-center justify-center border border-pink-200">
+            <DollarSign className="w-5 h-5 text-gray-700" />
+          </div>
+          <div>
+            <h2 className="text-xl font-bold text-gray-900">Add Transaction</h2>
+            <p className="text-gray-600">Track your income and expenses</p>
+          </div>
+        </div>
+      <form onSubmit={handleSubmit} className="space-y-6">
           <div className="grid grid-cols-2 gap-4">
             <div>
               <Label htmlFor="date">Date</Label>
@@ -132,11 +138,10 @@ export const TransactionForm = ({ onTransactionAdded }: { onTransactionAdded?: (
             />
           </div>
 
-          <Button type="submit" disabled={isSubmitting} className="w-full">
+          <Button type="submit" disabled={isSubmitting} className="w-full wealthsimple-button">
             {isSubmitting ? "Adding..." : "Add Transaction"}
           </Button>
         </form>
-      </CardContent>
-    </Card>
-  );
-};
+      </div>
+    );
+  };

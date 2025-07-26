@@ -18,7 +18,11 @@ interface Debt {
   due_date: string;
 }
 
-export const DebtTracker = () => {
+interface DebtTrackerProps {
+  onDataChanged?: () => void;
+}
+
+export const DebtTracker = ({ onDataChanged }: DebtTrackerProps) => {
   const [debts, setDebts] = useState<Debt[]>([]);
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({
@@ -75,6 +79,7 @@ export const DebtTracker = () => {
       });
       setShowForm(false);
       fetchDebts();
+      onDataChanged?.();
     } catch (error) {
       toast.error("Failed to add debt");
       console.error(error);
@@ -91,6 +96,7 @@ export const DebtTracker = () => {
       if (error) throw error;
       toast.success("Debt deleted successfully!");
       fetchDebts();
+      onDataChanged?.();
     } catch (error) {
       toast.error("Failed to delete debt");
       console.error(error);

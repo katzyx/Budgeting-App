@@ -16,7 +16,11 @@ interface Transaction {
   transaction_type: string;
 }
 
-export const TransactionList = () => {
+interface TransactionListProps {
+  onDataChanged?: () => void;
+}
+
+export const TransactionList = ({ onDataChanged }: TransactionListProps) => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -50,6 +54,7 @@ export const TransactionList = () => {
       if (error) throw error;
       toast.success("Transaction deleted successfully!");
       fetchTransactions();
+      onDataChanged?.();
     } catch (error) {
       toast.error("Failed to delete transaction");
       console.error(error);

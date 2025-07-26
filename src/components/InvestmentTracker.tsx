@@ -22,7 +22,11 @@ interface Investment {
   current_value: number;
 }
 
-export const InvestmentTracker = () => {
+interface InvestmentTrackerProps {
+  onDataChanged?: () => void;
+}
+
+export const InvestmentTracker = ({ onDataChanged }: InvestmentTrackerProps) => {
   const [investments, setInvestments] = useState<Investment[]>([]);
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({
@@ -76,6 +80,7 @@ export const InvestmentTracker = () => {
       });
       setShowForm(false);
       fetchInvestments();
+      onDataChanged?.();
     } catch (error) {
       toast.error("Failed to add investment");
       console.error(error);
@@ -92,6 +97,7 @@ export const InvestmentTracker = () => {
       if (error) throw error;
       toast.success("Investment deleted successfully!");
       fetchInvestments();
+      onDataChanged?.();
     } catch (error) {
       toast.error("Failed to delete investment");
       console.error(error);

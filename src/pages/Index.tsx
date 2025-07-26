@@ -17,6 +17,10 @@ const Index = () => {
     setRefreshTrigger(prev => prev + 1);
   };
 
+  const handleDataChanged = () => {
+    setRefreshTrigger(prev => prev + 1);
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <header className="border-b">
@@ -67,7 +71,7 @@ const Index = () => {
           </TabsContent>
 
           <TabsContent value="monthly" className="space-y-6">
-            <MonthlyTransactions key={refreshTrigger} />
+            <MonthlyTransactions key={refreshTrigger} onDataChanged={handleDataChanged} />
           </TabsContent>
 
           <TabsContent value="transactions" className="space-y-6">
@@ -82,19 +86,19 @@ const Index = () => {
                 </CardContent>
               </Card>
             </div>
-            <TransactionList key={refreshTrigger} />
+            <TransactionList key={refreshTrigger} onDataChanged={handleDataChanged} />
           </TabsContent>
 
           <TabsContent value="debts">
-            <DebtTracker />
+            <DebtTracker key={refreshTrigger} onDataChanged={handleDataChanged} />
           </TabsContent>
 
           <TabsContent value="savings">
-            <SavingsGoals />
+            <SavingsGoals key={refreshTrigger} onDataChanged={handleDataChanged} />
           </TabsContent>
 
           <TabsContent value="investments">
-            <InvestmentTracker />
+            <InvestmentTracker key={refreshTrigger} onDataChanged={handleDataChanged} />
           </TabsContent>
         </Tabs>
       </main>

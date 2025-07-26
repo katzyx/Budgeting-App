@@ -16,7 +16,11 @@ interface SavingsGoal {
   target_date: string;
 }
 
-export const SavingsGoals = () => {
+interface SavingsGoalsProps {
+  onDataChanged?: () => void;
+}
+
+export const SavingsGoals = ({ onDataChanged }: SavingsGoalsProps) => {
   const [goals, setGoals] = useState<SavingsGoal[]>([]);
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({
@@ -67,6 +71,7 @@ export const SavingsGoals = () => {
       });
       setShowForm(false);
       fetchGoals();
+      onDataChanged?.();
     } catch (error) {
       toast.error("Failed to add savings goal");
       console.error(error);
@@ -83,6 +88,7 @@ export const SavingsGoals = () => {
       if (error) throw error;
       toast.success("Savings goal deleted successfully!");
       fetchGoals();
+      onDataChanged?.();
     } catch (error) {
       toast.error("Failed to delete savings goal");
       console.error(error);

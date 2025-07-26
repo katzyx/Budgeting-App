@@ -29,7 +29,11 @@ interface MonthlyData {
   categoryBreakdown: { name: string; value: number }[];
 }
 
-export const MonthlyTransactions = () => {
+interface MonthlyTransactionsProps {
+  onDataChanged?: () => void;
+}
+
+export const MonthlyTransactions = ({ onDataChanged }: MonthlyTransactionsProps) => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [selectedMonth, setSelectedMonth] = useState<string>(format(new Date(), "yyyy-MM"));
   const [loading, setLoading] = useState(true);
@@ -64,6 +68,7 @@ export const MonthlyTransactions = () => {
       if (error) throw error;
       toast.success("Transaction deleted successfully!");
       fetchTransactions();
+      onDataChanged?.();
     } catch (error) {
       toast.error("Failed to delete transaction");
       console.error(error);

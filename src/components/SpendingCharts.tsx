@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line } from "recharts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { supabase } from "@/integrations/supabase/client";
+import { format, parseISO } from "date-fns";
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8', '#82CA9D', '#FFC658', '#FF7C7C'];
 
@@ -67,7 +68,7 @@ export const SpendingCharts = () => {
     return Object.entries(monthlyTotals)
       .sort(([a], [b]) => a.localeCompare(b))
       .map(([month, data]) => ({
-        month,
+        month: format(parseISO(month + "-01"), "MMM yyyy"),
         income: data.income,
         expenses: data.expenses,
         net: data.income - data.expenses

@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { TransactionForm } from "@/components/TransactionForm";
 import { SpendingCharts } from "@/components/SpendingCharts";
+import { MonthlyTransactions } from "@/components/MonthlyTransactions";
+import { TransactionList } from "@/components/TransactionList";
 import { DebtTracker } from "@/components/DebtTracker";
 import { SavingsGoals } from "@/components/SavingsGoals";
 import { InvestmentTracker } from "@/components/InvestmentTracker";
@@ -26,10 +28,14 @@ const Index = () => {
 
       <main className="container mx-auto px-4 py-6">
         <Tabs defaultValue="dashboard" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-5">
+          <TabsList className="grid w-full grid-cols-6">
             <TabsTrigger value="dashboard" className="flex items-center gap-2">
               <TrendingUp className="w-4 h-4" />
               Dashboard
+            </TabsTrigger>
+            <TabsTrigger value="monthly" className="flex items-center gap-2">
+              <DollarSign className="w-4 h-4" />
+              Monthly
             </TabsTrigger>
             <TabsTrigger value="transactions" className="flex items-center gap-2">
               <DollarSign className="w-4 h-4" />
@@ -60,6 +66,10 @@ const Index = () => {
             </Card>
           </TabsContent>
 
+          <TabsContent value="monthly" className="space-y-6">
+            <MonthlyTransactions key={refreshTrigger} />
+          </TabsContent>
+
           <TabsContent value="transactions" className="space-y-6">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <TransactionForm onTransactionAdded={handleTransactionAdded} />
@@ -72,6 +82,7 @@ const Index = () => {
                 </CardContent>
               </Card>
             </div>
+            <TransactionList key={refreshTrigger} />
           </TabsContent>
 
           <TabsContent value="debts">

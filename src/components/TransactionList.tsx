@@ -80,11 +80,11 @@ export const TransactionList = ({ onDataChanged }: TransactionListProps) => {
           <CardTitle>All Transactions</CardTitle>
           <div className="flex gap-4 text-sm">
             <div className="flex items-center gap-2">
-              <TrendingUp className="w-4 h-4 text-green-600" />
+              <TrendingUp className="w-4 h-4 text-gray-600" />
               <span>Total Income: ${totalIncome.toFixed(2)}</span>
             </div>
             <div className="flex items-center gap-2">
-              <TrendingDown className="w-4 h-4 text-red-600" />
+              <TrendingDown className="w-4 h-4 text-gray-600" />
               <span>Total Expenses: ${totalExpenses.toFixed(2)}</span>
             </div>
             <div className="flex items-center gap-2">
@@ -102,9 +102,9 @@ export const TransactionList = ({ onDataChanged }: TransactionListProps) => {
                     <div className="flex items-center gap-3">
                       <div className="flex items-center gap-2">
                         {transaction.transaction_type === 'income' ? (
-                          <TrendingUp className="w-4 h-4 text-green-600" />
+                          <TrendingUp className="w-4 h-4 text-gray-600" />
                         ) : (
-                          <TrendingDown className="w-4 h-4 text-red-600" />
+                          <TrendingDown className="w-4 h-4 text-gray-600" />
                         )}
                         <span className="font-medium">
                           {transaction.description || transaction.category}
@@ -119,7 +119,7 @@ export const TransactionList = ({ onDataChanged }: TransactionListProps) => {
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
-                    <span className={`font-bold text-lg ${transaction.transaction_type === 'income' ? 'text-green-600' : 'text-red-600'}`}>
+                    <span className="font-bold text-lg text-gray-900">
                       ${transaction.amount.toFixed(2)}
                     </span>
                                          <Button

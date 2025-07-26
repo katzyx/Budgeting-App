@@ -7,6 +7,7 @@ import { TransactionList } from "@/components/TransactionList";
 import { DebtTracker } from "@/components/DebtTracker";
 import { SavingsGoals } from "@/components/SavingsGoals";
 import { InvestmentTracker } from "@/components/InvestmentTracker";
+import { PaycheckSplitGoals } from "@/components/PaycheckSplitGoals";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { DollarSign, TrendingUp, Target, CreditCard } from "lucide-react";
 
@@ -79,6 +80,8 @@ const Index = () => {
               </div>
               <SpendingCharts key={refreshTrigger} />
             </div>
+            
+            <PaycheckSplitGoals key={refreshTrigger} onDataChanged={handleDataChanged} />
           </TabsContent>
 
           <TabsContent value="monthly" className="space-y-6">

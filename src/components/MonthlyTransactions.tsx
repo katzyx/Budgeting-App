@@ -180,7 +180,7 @@ export const MonthlyTransactions = ({ onDataChanged }: MonthlyTransactionsProps)
             <Card>
               <CardContent className="p-4">
                 <div className="text-sm text-muted-foreground">Income</div>
-                <div className="text-2xl font-bold text-green-600">
+                <div className="text-2xl font-bold text-gray-900">
                   ${monthlyData.income.toFixed(2)}
                 </div>
               </CardContent>
@@ -188,7 +188,7 @@ export const MonthlyTransactions = ({ onDataChanged }: MonthlyTransactionsProps)
             <Card>
               <CardContent className="p-4">
                 <div className="text-sm text-muted-foreground">Expenses</div>
-                <div className="text-2xl font-bold text-red-600">
+                <div className="text-2xl font-bold text-gray-900">
                   ${monthlyData.expenses.toFixed(2)}
                 </div>
               </CardContent>
@@ -196,7 +196,7 @@ export const MonthlyTransactions = ({ onDataChanged }: MonthlyTransactionsProps)
             <Card>
               <CardContent className="p-4">
                 <div className="text-sm text-muted-foreground">Net</div>
-                <div className={`text-2xl font-bold ${monthlyData.net >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                <div className="text-2xl font-bold text-gray-900">
                   ${monthlyData.net.toFixed(2)}
                 </div>
               </CardContent>

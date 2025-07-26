@@ -113,6 +113,42 @@ export type Database = {
         }
         Relationships: []
       }
+      paycheck_splits: {
+        Row: {
+          created_at: string
+          id: string
+          investing_percentage: number
+          name: string
+          paycheck_amount: number
+          savings_percentage: number
+          spending_percentage: number
+          debt_percentage: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          investing_percentage: number
+          name: string
+          paycheck_amount: number
+          savings_percentage: number
+          spending_percentage: number
+          debt_percentage?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          investing_percentage?: number
+          name?: string
+          paycheck_amount?: number
+          savings_percentage?: number
+          spending_percentage?: number
+          debt_percentage?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       transactions: {
         Row: {
           amount: number

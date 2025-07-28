@@ -7,8 +7,9 @@ import { DebtTracker } from "@/components/DebtTracker";
 import { SavingsGoals } from "@/components/SavingsGoals";
 import { InvestmentTracker } from "@/components/InvestmentTracker";
 import { PaycheckSplitGoals } from "@/components/PaycheckSplitGoals";
+import { MonthlyAnalytics } from "@/components/MonthlyAnalytics";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { DollarSign, TrendingUp, Target, CreditCard } from "lucide-react";
+import { DollarSign, TrendingUp, Target, CreditCard, BarChart3 } from "lucide-react";
 
 const Index = () => {
   const [refreshTrigger, setRefreshTrigger] = useState(0);
@@ -39,7 +40,7 @@ const Index = () => {
 
       <main className="container mx-auto px-4 sm:px-6 py-6 sm:py-8">
         <Tabs defaultValue="transactions" className="space-y-6 sm:space-y-8">
-          <TabsList className="grid w-full grid-cols-3 bg-gray-100 p-1 rounded-2xl gap-1 sm:gap-0">
+          <TabsList className="grid w-full grid-cols-4 bg-gray-100 p-1 rounded-2xl gap-1 sm:gap-0">
             <TabsTrigger value="transactions" className="flex items-center gap-1 sm:gap-2 data-[state=active]:bg-white data-[state=active]:shadow-sm rounded-xl transition-all duration-200 text-xs sm:text-sm px-2 sm:px-3 py-2">
               <DollarSign className="w-3 h-3 sm:w-4 sm:h-4" />
               <span className="hidden sm:inline">Transactions</span>
@@ -49,6 +50,11 @@ const Index = () => {
               <TrendingUp className="w-3 h-3 sm:w-4 sm:h-4" />
               <span className="hidden sm:inline">Dashboard</span>
               <span className="sm:hidden">Charts</span>
+            </TabsTrigger>
+            <TabsTrigger value="analytics" className="flex items-center gap-1 sm:gap-2 data-[state=active]:bg-white data-[state=active]:shadow-sm rounded-xl transition-all duration-200 text-xs sm:text-sm px-2 sm:px-3 py-2">
+              <BarChart3 className="w-3 h-3 sm:w-4 sm:h-4" />
+              <span className="hidden sm:inline">Analytics</span>
+              <span className="sm:hidden">Analytics</span>
             </TabsTrigger>
             <TabsTrigger value="goals" className="flex items-center gap-1 sm:gap-2 data-[state=active]:bg-white data-[state=active]:shadow-sm rounded-xl transition-all duration-200 text-xs sm:text-sm px-2 sm:px-3 py-2">
               <Target className="w-3 h-3 sm:w-4 sm:h-4" />
@@ -66,6 +72,10 @@ const Index = () => {
           <TabsContent value="dashboard" className="space-y-6">
             <DashboardView refreshTrigger={refreshTrigger} />
             <PaycheckSplitGoals key={refreshTrigger} onDataChanged={handleDataChanged} />
+          </TabsContent>
+
+          <TabsContent value="analytics" className="space-y-6">
+            <MonthlyAnalytics />
           </TabsContent>
 
           <TabsContent value="goals" className="space-y-6">

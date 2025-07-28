@@ -2,12 +2,12 @@ import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line } from "recharts";
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import { supabase } from "@/integrations/supabase/client";
 import { format, parseISO, subYears, subMonths } from "date-fns";
 import { TrendingUp, TrendingDown, DollarSign } from "lucide-react";
 
-const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8', '#82CA9D', '#FFC658', '#FF7C7C'];
+
 
 interface Transaction {
   id: string;
@@ -93,43 +93,7 @@ export const DashboardView = ({ refreshTrigger }: { refreshTrigger: number }) =>
       });
   };
 
-  const getCategoryData = () => {
-    const filtered = getFilteredTransactions();
-    const expenses = filtered.filter(t => t.transaction_type === 'expense');
-    const categoryTotals = expenses.reduce((acc, transaction) => {
-      acc[transaction.category] = (acc[transaction.category] || 0) + transaction.amount;
-      return acc;
-    }, {} as Record<string, number>);
 
-    return Object.entries(categoryTotals).map(([category, amount]) => ({
-      name: category,
-      value: amount
-    }));
-  };
-
-  const getMonthlyIncomeVsExpenses = () => {
-    const filtered = getFilteredTransactions();
-    const monthlyTotals = filtered.reduce((acc, transaction) => {
-      const month = transaction.date.substring(0, 7);
-      if (!acc[month]) {
-        acc[month] = { income: 0, expenses: 0 };
-      }
-      if (transaction.transaction_type === 'income') {
-        acc[month].income += transaction.amount;
-      } else {
-        acc[month].expenses += transaction.amount;
-      }
-      return acc;
-    }, {} as Record<string, { income: number; expenses: number }>);
-
-    return Object.entries(monthlyTotals)
-      .sort(([a], [b]) => a.localeCompare(b))
-      .map(([month, data]) => ({
-        month: format(parseISO(month + "-01"), "MMM yyyy"),
-        income: data.income,
-        expenses: data.expenses
-      }));
-  };
 
   const getTotalStats = () => {
     const filtered = getFilteredTransactions();
@@ -161,8 +125,6 @@ export const DashboardView = ({ refreshTrigger }: { refreshTrigger: number }) =>
   }
 
   const netWorthData = getNetWorthData();
-  const categoryData = getCategoryData();
-  const monthlyData = getMonthlyIncomeVsExpenses();
   const stats = getTotalStats();
   const availableMonths = getAvailableMonths();
 
@@ -256,67 +218,7 @@ export const DashboardView = ({ refreshTrigger }: { refreshTrigger: number }) =>
         </CardContent>
       </Card>
 
-      {/* Charts Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Expense Categories */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Expense Categories</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {categoryData.length > 0 ? (
-              <ResponsiveContainer width="100%" height={300}>
-                <PieChart>
-                  <Pie
-                    data={categoryData}
-                    cx="50%"
-                    cy="50%"
-                    labelLine={false}
-                    label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
-                    outerRadius={80}
-                    fill="#8884d8"
-                    dataKey="value"
-                  >
-                    {categoryData.map((_, index) => (
-                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                    ))}
-                  </Pie>
-                  <Tooltip formatter={(value) => [`$${Number(value).toFixed(2)}`, 'Amount']} />
-                </PieChart>
-              </ResponsiveContainer>
-            ) : (
-              <div className="flex items-center justify-center h-64 text-muted-foreground">
-                No expense data available
-              </div>
-            )}
-          </CardContent>
-        </Card>
 
-        {/* Monthly Income vs Expenses */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Monthly Income vs Expenses</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {monthlyData.length > 0 ? (
-              <ResponsiveContainer width="100%" height={300}>
-                <BarChart data={monthlyData}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="month" tick={{ fontSize: 12 }} />
-                  <YAxis tick={{ fontSize: 12 }} />
-                  <Tooltip formatter={(value) => [`$${Number(value).toFixed(2)}`]} />
-                  <Bar dataKey="income" fill="#00C49F" name="Income" />
-                  <Bar dataKey="expenses" fill="#FF8042" name="Expenses" />
-                </BarChart>
-              </ResponsiveContainer>
-            ) : (
-              <div className="flex items-center justify-center h-64 text-muted-foreground">
-                No transaction data available
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      </div>
     </div>
   );
 };

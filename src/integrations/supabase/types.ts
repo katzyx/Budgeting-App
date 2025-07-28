@@ -157,8 +157,12 @@ export type Database = {
           date: string
           description: string | null
           id: string
-          transaction_type: string
+          type: "Expense" | "Income" | "Debt Payment" | "Savings" | "Investment"
+          transaction_type: string // deprecated, use type
           updated_at: string
+          linkedDebtId?: string | null
+          linkedGoalId?: string | null
+          linkedInvestmentId?: string | null
         }
         Insert: {
           amount: number
@@ -167,8 +171,12 @@ export type Database = {
           date: string
           description?: string | null
           id?: string
-          transaction_type: string
+          type: "Expense" | "Income" | "Debt Payment" | "Savings" | "Investment"
+          transaction_type?: string
           updated_at?: string
+          linkedDebtId?: string | null
+          linkedGoalId?: string | null
+          linkedInvestmentId?: string | null
         }
         Update: {
           amount?: number
@@ -177,8 +185,12 @@ export type Database = {
           date?: string
           description?: string | null
           id?: string
+          type?: "Expense" | "Income" | "Debt Payment" | "Savings" | "Investment"
           transaction_type?: string
           updated_at?: string
+          linkedDebtId?: string | null
+          linkedGoalId?: string | null
+          linkedInvestmentId?: string | null
         }
         Relationships: []
       }

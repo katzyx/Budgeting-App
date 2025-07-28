@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { TransactionForm } from "@/components/TransactionForm";
-import { ChartsCarousel } from "@/components/ChartsCarousel";
-import { MonthlyTransactions } from "@/components/MonthlyTransactions";
+import { DashboardView } from "@/components/DashboardView";
 import { TransactionList } from "@/components/TransactionList";
 import { DebtTracker } from "@/components/DebtTracker";
 import { SavingsGoals } from "@/components/SavingsGoals";
@@ -40,7 +39,7 @@ const Index = () => {
 
       <main className="container mx-auto px-4 sm:px-6 py-6 sm:py-8">
         <Tabs defaultValue="transactions" className="space-y-6 sm:space-y-8">
-          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 bg-gray-100 p-1 rounded-2xl gap-1 sm:gap-0">
+          <TabsList className="grid w-full grid-cols-3 bg-gray-100 p-1 rounded-2xl gap-1 sm:gap-0">
             <TabsTrigger value="transactions" className="flex items-center gap-1 sm:gap-2 data-[state=active]:bg-white data-[state=active]:shadow-sm rounded-xl transition-all duration-200 text-xs sm:text-sm px-2 sm:px-3 py-2">
               <DollarSign className="w-3 h-3 sm:w-4 sm:h-4" />
               <span className="hidden sm:inline">Transactions</span>
@@ -55,10 +54,6 @@ const Index = () => {
               <Target className="w-3 h-3 sm:w-4 sm:h-4" />
               Goals
             </TabsTrigger>
-            <TabsTrigger value="monthly" className="flex items-center gap-1 sm:gap-2 data-[state=active]:bg-white data-[state=active]:shadow-sm rounded-xl transition-all duration-200 text-xs sm:text-sm px-2 sm:px-3 py-2">
-              <DollarSign className="w-3 h-3 sm:w-4 sm:h-4" />
-              Monthly
-            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="transactions" className="space-y-6">
@@ -69,9 +64,7 @@ const Index = () => {
           </TabsContent>
 
           <TabsContent value="dashboard" className="space-y-6">
-            <div className="wealthsimple-card p-4 sm:p-6">
-              <ChartsCarousel refreshTrigger={refreshTrigger} />
-            </div>
+            <DashboardView refreshTrigger={refreshTrigger} />
             <PaycheckSplitGoals key={refreshTrigger} onDataChanged={handleDataChanged} />
           </TabsContent>
 
@@ -83,9 +76,6 @@ const Index = () => {
             <InvestmentTracker key={refreshTrigger} onDataChanged={handleDataChanged} />
           </TabsContent>
 
-          <TabsContent value="monthly" className="space-y-6">
-            <MonthlyTransactions key={refreshTrigger} onDataChanged={handleDataChanged} />
-          </TabsContent>
         </Tabs>
       </main>
     </div>

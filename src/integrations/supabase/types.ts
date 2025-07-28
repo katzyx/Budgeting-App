@@ -83,6 +83,42 @@ export type Database = {
         }
         Relationships: []
       }
+      paycheck_splits: {
+        Row: {
+          created_at: string
+          debt_percentage: number
+          id: string
+          investing_percentage: number
+          name: string
+          paycheck_amount: number
+          savings_percentage: number
+          spending_percentage: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          debt_percentage?: number
+          id?: string
+          investing_percentage?: number
+          name: string
+          paycheck_amount: number
+          savings_percentage?: number
+          spending_percentage?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          debt_percentage?: number
+          id?: string
+          investing_percentage?: number
+          name?: string
+          paycheck_amount?: number
+          savings_percentage?: number
+          spending_percentage?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       savings_goals: {
         Row: {
           created_at: string
@@ -109,42 +145,6 @@ export type Database = {
           name?: string
           target_amount?: number
           target_date?: string | null
-          updated_at?: string
-        }
-        Relationships: []
-      }
-      paycheck_splits: {
-        Row: {
-          created_at: string
-          id: string
-          investing_percentage: number
-          name: string
-          paycheck_amount: number
-          savings_percentage: number
-          spending_percentage: number
-          debt_percentage: number
-          updated_at: string
-        }
-        Insert: {
-          created_at?: string
-          id?: string
-          investing_percentage: number
-          name: string
-          paycheck_amount: number
-          savings_percentage: number
-          spending_percentage: number
-          debt_percentage?: number
-          updated_at?: string
-        }
-        Update: {
-          created_at?: string
-          id?: string
-          investing_percentage?: number
-          name?: string
-          paycheck_amount?: number
-          savings_percentage?: number
-          spending_percentage?: number
-          debt_percentage?: number
           updated_at?: string
         }
         Relationships: []

@@ -75,7 +75,7 @@ export const TransactionForm = ({ onTransactionAdded }: { onTransactionAdded?: (
           </div>
         </div>
       <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <Label htmlFor="date">Date</Label>
               <Input
@@ -83,6 +83,7 @@ export const TransactionForm = ({ onTransactionAdded }: { onTransactionAdded?: (
                 type="date"
                 value={formData.date}
                 onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+                className="w-full text-base"
                 required
               />
             </div>
@@ -95,16 +96,17 @@ export const TransactionForm = ({ onTransactionAdded }: { onTransactionAdded?: (
                 placeholder="0.00"
                 value={formData.amount}
                 onChange={(e) => setFormData({ ...formData, amount: e.target.value })}
+                className="w-full text-base"
                 required
               />
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <Label htmlFor="type">Type</Label>
               <Select value={formData.transaction_type} onValueChange={(value: "income" | "expense") => setFormData({ ...formData, transaction_type: value })}>
-                <SelectTrigger>
+                <SelectTrigger className="w-full text-base">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -116,7 +118,7 @@ export const TransactionForm = ({ onTransactionAdded }: { onTransactionAdded?: (
             <div>
               <Label htmlFor="category">Category</Label>
               <Select value={formData.category} onValueChange={(value) => setFormData({ ...formData, category: value })}>
-                <SelectTrigger>
+                <SelectTrigger className="w-full text-base">
                   <SelectValue placeholder="Select category" />
                 </SelectTrigger>
                 <SelectContent>
@@ -135,6 +137,8 @@ export const TransactionForm = ({ onTransactionAdded }: { onTransactionAdded?: (
               placeholder="Transaction details..."
               value={formData.description}
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+              className="w-full text-base resize-none"
+              rows={3}
             />
           </div>
 

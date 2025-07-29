@@ -7,7 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { format, parseISO } from "date-fns";
 import { TrendingUp, TrendingDown, DollarSign, BarChart3, PieChart as PieChartIcon, TrendingUpIcon } from "lucide-react";
 
-const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8', '#82CA9D', '#FFC658', '#FF7C7C'];
+const COLORS = ['hsl(344 100% 88%)', 'hsl(200 50% 88%)', 'hsl(160 30% 88%)', 'hsl(60 85% 75%)', 'hsl(142 76% 36%)', 'hsl(0 84% 60%)', 'hsl(217 91% 60%)', 'hsl(38 92% 50%)'];
 
 interface Transaction {
   id: string;
@@ -109,26 +109,26 @@ export const ChartsCarousel = ({ refreshTrigger }: { refreshTrigger: number }) =
       icon: DollarSign,
       content: (
         <div className="grid grid-cols-1 gap-4">
-          <div className="text-center p-4 bg-gradient-to-r from-green-50 to-green-100 rounded-lg">
+          <div className="text-center p-4 bg-gradient-to-r from-accent/20 to-accent/30 rounded-lg">
             <div className="flex items-center justify-center gap-2 mb-2">
-              <TrendingUp className="w-5 h-5 text-green-600" />
-              <span className="text-sm font-medium text-green-700">Total Income</span>
+              <TrendingUp className="w-5 h-5 text-success" />
+              <span className="text-xs sm:text-sm font-medium text-success truncate">Total Income</span>
             </div>
-            <p className="text-2xl font-bold text-green-800">${stats.totalIncome.toFixed(2)}</p>
+            <p className="text-lg sm:text-xl md:text-2xl font-bold text-success break-all">${stats.totalIncome.toFixed(2)}</p>
           </div>
-          <div className="text-center p-4 bg-gradient-to-r from-red-50 to-red-100 rounded-lg">
+          <div className="text-center p-4 bg-gradient-to-r from-destructive/20 to-destructive/30 rounded-lg">
             <div className="flex items-center justify-center gap-2 mb-2">
-              <TrendingDown className="w-5 h-5 text-red-600" />
-              <span className="text-sm font-medium text-red-700">Total Expenses</span>
+              <TrendingDown className="w-5 h-5 text-destructive" />
+              <span className="text-xs sm:text-sm font-medium text-destructive truncate">Total Expenses</span>
             </div>
-            <p className="text-2xl font-bold text-red-800">${stats.totalExpenses.toFixed(2)}</p>
+            <p className="text-lg sm:text-xl md:text-2xl font-bold text-destructive break-all">${stats.totalExpenses.toFixed(2)}</p>
           </div>
-          <div className="text-center p-4 bg-gradient-to-r from-blue-50 to-blue-100 rounded-lg">
+          <div className="text-center p-4 bg-gradient-to-r from-primary/20 to-primary/30 rounded-lg">
             <div className="flex items-center justify-center gap-2 mb-2">
-              <DollarSign className="w-5 h-5 text-blue-600" />
-              <span className="text-sm font-medium text-blue-700">Net Amount</span>
+              <DollarSign className="w-5 h-5 text-primary" />
+              <span className="text-xs sm:text-sm font-medium text-primary truncate">Net Amount</span>
             </div>
-            <p className={`text-2xl font-bold ${stats.netAmount >= 0 ? 'text-blue-800' : 'text-red-800'}`}>
+            <p className={`text-lg sm:text-xl md:text-2xl font-bold break-all ${stats.netAmount >= 0 ? 'text-primary' : 'text-destructive'}`}>
               ${stats.netAmount.toFixed(2)}
             </p>
           </div>
@@ -147,16 +147,19 @@ export const ChartsCarousel = ({ refreshTrigger }: { refreshTrigger: number }) =
               cx="50%"
               cy="50%"
               labelLine={false}
-              label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
-              outerRadius={80}
-              fill="#8884d8"
+              label={({ name, percent }) => `${name.length > 8 ? name.substring(0, 8) + '...' : name} ${(percent * 100).toFixed(0)}%`}
+              outerRadius={window.innerWidth < 640 ? 60 : 80}
+              fill="hsl(var(--primary))"
               dataKey="value"
             >
               {categoryData.map((_, index) => (
                 <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
               ))}
             </Pie>
-            <Tooltip formatter={(value) => [`$${value}`, 'Amount']} />
+            <Tooltip 
+              formatter={(value) => [`$${value}`, 'Amount']}
+              contentStyle={{ fontSize: '12px' }}
+            />
           </PieChart>
         </ResponsiveContainer>
       )
@@ -167,13 +170,27 @@ export const ChartsCarousel = ({ refreshTrigger }: { refreshTrigger: number }) =
       icon: BarChart3,
       content: (
         <ResponsiveContainer width="100%" height={280}>
-          <BarChart data={monthlyData}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="month" tick={{ fontSize: 12 }} />
-            <YAxis tick={{ fontSize: 12 }} />
-            <Tooltip formatter={(value) => `$${value}`} />
-            <Bar dataKey="income" fill="#00C49F" />
-            <Bar dataKey="expenses" fill="#FF8042" />
+          <BarChart data={monthlyData} margin={{ left: 20, right: 20, top: 20, bottom: 20 }}>
+            <CartesianGrid strokeDasharray="3 3" className="opacity-30" />
+            <XAxis 
+              dataKey="month" 
+              tick={{ fontSize: 10 }} 
+              interval="preserveStartEnd"
+              angle={-45}
+              textAnchor="end"
+              height={60}
+            />
+            <YAxis 
+              tick={{ fontSize: 10 }} 
+              width={60}
+              tickFormatter={(value) => `$${(value / 1000).toFixed(0)}k`}
+            />
+            <Tooltip 
+              formatter={(value) => `$${value}`}
+              contentStyle={{ fontSize: '12px' }}
+            />
+            <Bar dataKey="income" fill="hsl(var(--success))" />
+            <Bar dataKey="expenses" fill="hsl(var(--destructive))" />
           </BarChart>
         </ResponsiveContainer>
       )
@@ -184,12 +201,32 @@ export const ChartsCarousel = ({ refreshTrigger }: { refreshTrigger: number }) =
       icon: TrendingUpIcon,
       content: (
         <ResponsiveContainer width="100%" height={280}>
-          <LineChart data={monthlyData}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="month" tick={{ fontSize: 12 }} />
-            <YAxis tick={{ fontSize: 12 }} />
-            <Tooltip formatter={(value) => `$${value}`} />
-            <Line type="monotone" dataKey="net" stroke="#8884d8" strokeWidth={2} />
+          <LineChart data={monthlyData} margin={{ left: 20, right: 20, top: 20, bottom: 20 }}>
+            <CartesianGrid strokeDasharray="3 3" className="opacity-30" />
+            <XAxis 
+              dataKey="month" 
+              tick={{ fontSize: 10 }} 
+              interval="preserveStartEnd"
+              angle={-45}
+              textAnchor="end"
+              height={60}
+            />
+            <YAxis 
+              tick={{ fontSize: 10 }} 
+              width={60}
+              tickFormatter={(value) => `$${(value / 1000).toFixed(0)}k`}
+            />
+            <Tooltip 
+              formatter={(value) => `$${value}`}
+              contentStyle={{ fontSize: '12px' }}
+            />
+            <Line 
+              type="monotone" 
+              dataKey="net" 
+              stroke="hsl(var(--primary))" 
+              strokeWidth={3}
+              dot={{ fill: "hsl(var(--primary))", strokeWidth: 2, r: 4 }}
+            />
           </LineChart>
         </ResponsiveContainer>
       )
@@ -200,7 +237,7 @@ export const ChartsCarousel = ({ refreshTrigger }: { refreshTrigger: number }) =
     <div className="w-full">
       <Carousel className="w-full max-w-full">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-gray-900">Financial Charts</h3>
+          <h3 className="text-base sm:text-lg font-semibold text-foreground truncate">Financial Charts</h3>
           <div className="flex gap-2">
             <CarouselPrevious className="relative translate-y-0 translate-x-0" />
             <CarouselNext className="relative translate-y-0 translate-x-0" />
@@ -210,10 +247,10 @@ export const ChartsCarousel = ({ refreshTrigger }: { refreshTrigger: number }) =
           {charts.map((chart) => (
             <CarouselItem key={chart.id}>
               <Card className="border-0 shadow-sm">
-                <CardHeader className="pb-3">
-                  <CardTitle className="flex items-center gap-2 text-base">
-                    <chart.icon className="w-5 h-5 text-primary" />
-                    {chart.title}
+                 <CardHeader className="pb-3">
+                  <CardTitle className="flex items-center gap-2 text-sm sm:text-base truncate">
+                    <chart.icon className="w-4 h-4 sm:w-5 sm:h-5 text-primary flex-shrink-0" />
+                    <span className="truncate">{chart.title}</span>
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="pt-0">

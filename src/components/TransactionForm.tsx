@@ -119,29 +119,29 @@ export const TransactionForm = ({ onTransactionAdded, prefillType = "Expense", p
   return (
     <div className="wealthsimple-card p-6">
       <div className="flex items-center gap-3 mb-6">
-        <div className="w-10 h-10 wealthsimple-pink rounded-xl flex items-center justify-center border border-pink-200">
-          <DollarSign className="w-5 h-5 text-gray-700" />
+        <div className="w-10 h-10 bg-primary/20 rounded-xl flex items-center justify-center border border-primary/30">
+          <DollarSign className="w-5 h-5 text-primary" />
         </div>
-        <div>
-          <h2 className="text-xl font-bold text-gray-900">Add Transaction</h2>
-          <p className="text-gray-600">Track your finances</p>
+        <div className="min-w-0 flex-1">
+          <h2 className="text-lg sm:text-xl font-bold text-foreground truncate">Add Transaction</h2>
+          <p className="text-sm text-muted-foreground truncate">Track your finances</p>
         </div>
       </div>
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div>
-            <Label htmlFor="date">Date</Label>
+          <div className="min-w-0">
+            <Label htmlFor="date" className="text-sm font-medium">Date</Label>
             <Input
               id="date"
               type="date"
               value={formData.date}
               onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-              className="w-full text-base"
+              className="w-full text-sm sm:text-base mt-1"
               required
             />
           </div>
-          <div>
-            <Label htmlFor="amount">Amount ($)</Label>
+          <div className="min-w-0">
+            <Label htmlFor="amount" className="text-sm font-medium">Amount ($)</Label>
             <Input
               id="amount"
               type="number"
@@ -149,17 +149,17 @@ export const TransactionForm = ({ onTransactionAdded, prefillType = "Expense", p
               placeholder="0.00"
               value={formData.amount}
               onChange={(e) => setFormData({ ...formData, amount: e.target.value })}
-              className="w-full text-base"
+              className="w-full text-sm sm:text-base mt-1"
               required
             />
           </div>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div>
-            <Label htmlFor="type">Type</Label>
+          <div className="min-w-0">
+            <Label htmlFor="type" className="text-sm font-medium">Type</Label>
             <Select value={formData.type} onValueChange={(value: "Expense" | "Income" | "Debt Payment" | "Savings" | "Investment") => setFormData({ ...formData, type: value })}>
-              <SelectTrigger className="w-full text-base">
+              <SelectTrigger className="w-full text-sm sm:text-base mt-1">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -171,10 +171,10 @@ export const TransactionForm = ({ onTransactionAdded, prefillType = "Expense", p
               </SelectContent>
             </Select>
           </div>
-          <div>
-            <Label htmlFor="category">Category</Label>
+          <div className="min-w-0">
+            <Label htmlFor="category" className="text-sm font-medium">Category</Label>
             <Select value={formData.category} onValueChange={(value) => setFormData({ ...formData, category: value })}>
-              <SelectTrigger className="w-full text-base">
+              <SelectTrigger className="w-full text-sm sm:text-base mt-1">
                 <SelectValue placeholder="Select category" />
               </SelectTrigger>
               <SelectContent>
@@ -233,19 +233,23 @@ export const TransactionForm = ({ onTransactionAdded, prefillType = "Expense", p
           </div>
         )}
 
-        <div>
-          <Label htmlFor="description">Description (Optional)</Label>
+        <div className="min-w-0">
+          <Label htmlFor="description" className="text-sm font-medium">Description (Optional)</Label>
           <Textarea
             id="description"
             placeholder="Transaction details..."
             value={formData.description}
             onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-            className="w-full text-base resize-none"
+            className="w-full text-sm sm:text-base resize-none mt-1"
             rows={3}
           />
         </div>
 
-        <Button type="submit" disabled={isSubmitting} className="w-full wealthsimple-button">
+        <Button 
+          type="submit" 
+          disabled={isSubmitting} 
+          className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-medium py-2 sm:py-3 text-sm sm:text-base rounded-xl transition-all duration-200"
+        >
           {isSubmitting ? "Adding..." : "Add Transaction"}
         </Button>
       </form>

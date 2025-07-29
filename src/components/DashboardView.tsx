@@ -134,7 +134,7 @@ export const DashboardView = ({ refreshTrigger }: { refreshTrigger: number }) =>
       <Card>
         <CardHeader>
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <CardTitle className="text-xl">Net Worth Overview</CardTitle>
+            <CardTitle className="text-lg sm:text-xl lg:text-2xl truncate">Net Worth Overview</CardTitle>
             <div className="flex flex-col sm:flex-row gap-2">
               <div className="flex gap-1">
                 <Button
@@ -178,40 +178,61 @@ export const DashboardView = ({ refreshTrigger }: { refreshTrigger: number }) =>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-            <div className="text-center p-4 bg-gradient-to-r from-green-50 to-green-100 rounded-lg">
+            <div className="text-center p-4 bg-gradient-to-r from-accent/20 to-accent/30 rounded-lg">
               <div className="flex items-center justify-center gap-2 mb-2">
-                <TrendingUp className="w-5 h-5 text-green-600" />
-                <span className="text-sm font-medium text-green-700">Total Income</span>
+                <TrendingUp className="w-5 h-5 text-success" />
+                <span className="text-xs sm:text-sm font-medium text-success truncate">Total Income</span>
               </div>
-              <p className="text-2xl font-bold text-green-800">${stats.totalIncome.toFixed(2)}</p>
+              <p className="text-lg sm:text-xl md:text-2xl font-bold text-success break-all">${stats.totalIncome.toFixed(2)}</p>
             </div>
-            <div className="text-center p-4 bg-gradient-to-r from-red-50 to-red-100 rounded-lg">
+            <div className="text-center p-4 bg-gradient-to-r from-destructive/20 to-destructive/30 rounded-lg">
               <div className="flex items-center justify-center gap-2 mb-2">
-                <TrendingDown className="w-5 h-5 text-red-600" />
-                <span className="text-sm font-medium text-red-700">Total Expenses</span>
+                <TrendingDown className="w-5 h-5 text-destructive" />
+                <span className="text-xs sm:text-sm font-medium text-destructive truncate">Total Expenses</span>
               </div>
-              <p className="text-2xl font-bold text-red-800">${stats.totalExpenses.toFixed(2)}</p>
+              <p className="text-lg sm:text-xl md:text-2xl font-bold text-destructive break-all">${stats.totalExpenses.toFixed(2)}</p>
             </div>
-            <div className="text-center p-4 bg-gradient-to-r from-blue-50 to-blue-100 rounded-lg">
+            <div className="text-center p-4 bg-gradient-to-r from-primary/20 to-primary/30 rounded-lg">
               <div className="flex items-center justify-center gap-2 mb-2">
-                <DollarSign className="w-5 h-5 text-blue-600" />
-                <span className="text-sm font-medium text-blue-700">Net Worth</span>
+                <DollarSign className="w-5 h-5 text-primary" />
+                <span className="text-xs sm:text-sm font-medium text-primary truncate">Net Worth</span>
               </div>
-              <p className={`text-2xl font-bold ${stats.netWorth >= 0 ? 'text-blue-800' : 'text-red-800'}`}>
+              <p className={`text-lg sm:text-xl md:text-2xl font-bold break-all ${stats.netWorth >= 0 ? 'text-primary' : 'text-destructive'}`}>
                 ${stats.netWorth.toFixed(2)}
               </p>
             </div>
           </div>
 
           {/* Net Worth Trend Chart */}
-          <div className="h-64">
+          <div className="h-64 sm:h-80">
             <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={netWorthData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="month" tick={{ fontSize: 12 }} />
-                <YAxis tick={{ fontSize: 12 }} />
-                <Tooltip formatter={(value) => [`$${Number(value).toFixed(2)}`, 'Net Worth']} />
-                <Line type="monotone" dataKey="net" stroke="#0088FE" strokeWidth={3} />
+              <LineChart data={netWorthData} margin={{ left: 20, right: 20, top: 20, bottom: 20 }}>
+                <CartesianGrid strokeDasharray="3 3" className="opacity-30" />
+                <XAxis 
+                  dataKey="month" 
+                  tick={{ fontSize: 10 }} 
+                  interval="preserveStartEnd"
+                  angle={-45}
+                  textAnchor="end"
+                  height={60}
+                />
+                <YAxis 
+                  tick={{ fontSize: 10 }} 
+                  width={80}
+                  tickFormatter={(value) => `$${(value / 1000).toFixed(0)}k`}
+                />
+                <Tooltip 
+                  formatter={(value) => [`$${Number(value).toFixed(2)}`, 'Net Worth']}
+                  labelStyle={{ fontSize: '12px' }}
+                  contentStyle={{ fontSize: '12px' }}
+                />
+                <Line 
+                  type="monotone" 
+                  dataKey="net" 
+                  stroke="hsl(var(--primary))" 
+                  strokeWidth={3} 
+                  dot={{ fill: "hsl(var(--primary))", strokeWidth: 2, r: 4 }}
+                />
               </LineChart>
             </ResponsiveContainer>
           </div>

@@ -149,6 +149,48 @@ export type Database = {
         }
         Relationships: []
       }
+      transaction_categories: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      transaction_types: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       transactions: {
         Row: {
           amount: number
@@ -157,12 +199,8 @@ export type Database = {
           date: string
           description: string | null
           id: string
-          type: "Expense" | "Income" | "Debt Payment" | "Savings" | "Investment"
-          transaction_type: string // deprecated, use type
+          transaction_type: string
           updated_at: string
-          linkedDebtId?: string | null
-          linkedGoalId?: string | null
-          linkedInvestmentId?: string | null
         }
         Insert: {
           amount: number
@@ -171,12 +209,8 @@ export type Database = {
           date: string
           description?: string | null
           id?: string
-          type: "Expense" | "Income" | "Debt Payment" | "Savings" | "Investment"
-          transaction_type?: string
+          transaction_type: string
           updated_at?: string
-          linkedDebtId?: string | null
-          linkedGoalId?: string | null
-          linkedInvestmentId?: string | null
         }
         Update: {
           amount?: number
@@ -185,12 +219,8 @@ export type Database = {
           date?: string
           description?: string | null
           id?: string
-          type?: "Expense" | "Income" | "Debt Payment" | "Savings" | "Investment"
           transaction_type?: string
           updated_at?: string
-          linkedDebtId?: string | null
-          linkedGoalId?: string | null
-          linkedInvestmentId?: string | null
         }
         Relationships: []
       }

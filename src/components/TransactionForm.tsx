@@ -9,15 +9,19 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { DollarSign } from "lucide-react";
 
-const CATEGORIES = [
-  "Food & Dining", "Shopping", "Transportation", "Bills & Utilities", 
-  "Entertainment", "Health & Fitness", "Travel", "Education", 
-  "Gifts & Donations", "Business Services", "Other"
-];
+interface TransactionType {
+  id: string;
+  name: string;
+}
+
+interface Category {
+  id: string;
+  name: string;
+}
 
 interface TransactionFormProps {
   onTransactionAdded?: () => void;
-  prefillType?: "Expense" | "Income" | "Debt Payment" | "Savings" | "Investment";
+  prefillType?: string;
   prefillGoalId?: string;
 }
 
@@ -35,25 +39,28 @@ export const TransactionForm = ({ onTransactionAdded, prefillType = "Expense", p
   const [debts, setDebts] = useState<any[]>([]);
   const [goals, setGoals] = useState<any[]>([]);
   const [investments, setInvestments] = useState<any[]>([]);
+  const [transactionTypes, setTransactionTypes] = useState<TransactionType[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Fetch debts, goals, investments for dropdowns
+  // Fetch all data for dropdowns
   useEffect(() => {
-    const fetchDebts = async () => {
-      const { data } = await supabase.from("debts").select("id, name, current_balance, total_amount");
-      setDebts(data || []);
+    const fetchData = async () => {
+      const [debtsResult, goalsResult, investmentsResult, typesResult, categoriesResult] = await Promise.all([
+        supabase.from("debts").select("id, name, current_balance, total_amount"),
+        supabase.from("savings_goals").select("id, name, current_amount, target_amount"),
+        supabase.from("investments").select("id, name, current_value, amount"),
+        supabase.from("transaction_types").select("id, name").order("name"),
+        supabase.from("transaction_categories").select("id, name").order("name")
+      ]);
+      
+      setDebts(debtsResult.data || []);
+      setGoals(goalsResult.data || []);
+      setInvestments(investmentsResult.data || []);
+      setTransactionTypes(typesResult.data || []);
+      setCategories(categoriesResult.data || []);
     };
-    const fetchGoals = async () => {
-      const { data } = await supabase.from("savings_goals").select("id, name, current_amount, target_amount");
-      setGoals(data || []);
-    };
-    const fetchInvestments = async () => {
-      const { data } = await supabase.from("investments").select("id, name, current_value, amount");
-      setInvestments(data || []);
-    };
-    fetchDebts();
-    fetchGoals();
-    fetchInvestments();
+    fetchData();
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -158,16 +165,14 @@ export const TransactionForm = ({ onTransactionAdded, prefillType = "Expense", p
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="min-w-0">
             <Label htmlFor="type" className="text-sm font-medium">Type</Label>
-            <Select value={formData.type} onValueChange={(value: "Expense" | "Income" | "Debt Payment" | "Savings" | "Investment") => setFormData({ ...formData, type: value })}>
+            <Select value={formData.type} onValueChange={(value) => setFormData({ ...formData, type: value })}>
               <SelectTrigger className="w-full text-sm sm:text-base mt-1">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="Expense">Expense</SelectItem>
-                <SelectItem value="Income">Income</SelectItem>
-                <SelectItem value="Debt Payment">Debt Payment</SelectItem>
-                <SelectItem value="Savings">Savings</SelectItem>
-                <SelectItem value="Investment">Investment</SelectItem>
+                {transactionTypes.map((type) => (
+                  <SelectItem key={type.id} value={type.name}>{type.name}</SelectItem>
+                ))}
               </SelectContent>
             </Select>
           </div>
@@ -178,8 +183,8 @@ export const TransactionForm = ({ onTransactionAdded, prefillType = "Expense", p
                 <SelectValue placeholder="Select category" />
               </SelectTrigger>
               <SelectContent>
-                {CATEGORIES.map((category) => (
-                  <SelectItem key={category} value={category}>{category}</SelectItem>
+                {categories.map((category) => (
+                  <SelectItem key={category.id} value={category.name}>{category.name}</SelectItem>
                 ))}
               </SelectContent>
             </Select>

@@ -6,8 +6,9 @@ import { TransactionList } from "@/components/TransactionList";
 import { FinancialHealth } from "@/components/FinancialHealth";
 import { PaycheckSplitGoals } from "@/components/PaycheckSplitGoals";
 import { MonthlyAnalytics } from "@/components/MonthlyAnalytics";
+import { ManageTransactionTypes } from "@/components/ManageTransactionTypes";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { DollarSign, TrendingUp, Target, CreditCard, BarChart3 } from "lucide-react";
+import { DollarSign, TrendingUp, Target, CreditCard, BarChart3, Settings } from "lucide-react";
 
 const Index = () => {
   const [refreshTrigger, setRefreshTrigger] = useState(0);
@@ -54,6 +55,11 @@ const Index = () => {
               <span className="hidden sm:inline">Financial Health</span>
               <span className="sm:hidden">Health</span>
             </TabsTrigger>
+            <TabsTrigger value="settings" className="flex items-center gap-1 sm:gap-2 data-[state=active]:bg-white data-[state=active]:shadow-sm rounded-xl transition-all duration-200 text-xs sm:text-sm px-2 sm:px-3 py-2">
+              <Settings className="w-3 h-3 sm:w-4 sm:h-4" />
+              <span className="hidden sm:inline">Settings</span>
+              <span className="sm:hidden">Settings</span>
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="transactions" className="space-y-6">
@@ -71,6 +77,10 @@ const Index = () => {
 
           <TabsContent value="financial-health" className="space-y-6">
             <FinancialHealth />
+          </TabsContent>
+
+          <TabsContent value="settings" className="space-y-6">
+            <ManageTransactionTypes />
           </TabsContent>
 
         </Tabs>

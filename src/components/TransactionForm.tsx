@@ -77,10 +77,10 @@ export const TransactionForm = ({ onTransactionAdded, prefillType = "Expense", p
         amount: parseFloat(formData.amount),
         category: formData.category,
         description: formData.description,
-        type: formData.type,
-        linkedDebtId: formData.type === "Debt Payment" ? formData.linkedDebtId : null,
-        linkedGoalId: formData.type === "Savings" ? formData.linkedGoalId : null,
-        linkedInvestmentId: formData.type === "Investment" ? formData.linkedInvestmentId : null
+        transaction_type: formData.type.toLowerCase(),
+        linked_debt_id: formData.type === "Debt Payment" ? formData.linkedDebtId : null,
+        linked_goal_id: formData.type === "Savings" ? formData.linkedGoalId : null,
+        linked_investment_id: formData.type === "Investment" ? formData.linkedInvestmentId : null
       };
       const { error } = await supabase.from("transactions").insert([insertObj]);
       if (error) throw error;
